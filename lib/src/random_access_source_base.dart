@@ -47,7 +47,7 @@ class BytesRASource extends RandomAccessSource {
       return Uint8List(0);
     }
     final end = (_position + length).clamp(0, _bytes.length);
-    final result = _bytes.sublist(_position, end);
+    final result = Uint8List.sublistView(_bytes, _position, end);
     _position = end;
     return result;
   }
