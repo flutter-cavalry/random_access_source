@@ -1,3 +1,7 @@
+## 1.1.0
+
+- Add `RandomAccessBinaryReader`.
+
 ## 1.0.2
 
 - Performance improvements.
