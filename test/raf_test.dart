@@ -69,4 +69,19 @@ void main() {
     expect(await src.readByte(), 3);
     await src.close();
   });
+
+  test('ReadToEnd', () async {
+    final src = await _rafSource();
+    expect(await src.readToEnd(), Uint8List.fromList([1, 2, 3, 4, 5]));
+    expect(await src.position(), 5);
+    await src.close();
+  });
+
+  test('ReadToEnd (halfway)', () async {
+    final src = await _rafSource();
+    await src.setPosition(2);
+    expect(await src.readToEnd(), Uint8List.fromList([3, 4, 5]));
+    expect(await src.position(), 5);
+    await src.close();
+  });
 }

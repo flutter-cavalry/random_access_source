@@ -18,6 +18,9 @@ abstract class RandomAccessSource {
   /// Sets the current position in the source.
   Future<void> setPosition(int position);
 
+  /// Reads all the remaining bytes from the source.
+  Future<Uint8List> readToEnd();
+
   /// Closes the source.
   Future<void> close();
 }
@@ -63,6 +66,13 @@ class BytesRASource extends RandomAccessSource {
   }
 
   @override
+  Future<Uint8List> readToEnd() async {
+    final result = Uint8List.sublistView(_bytes, _position);
+    _position = _bytes.length;
+    return result;
+  }
+
+  @override
   Future<void> close() async {}
 }
 
@@ -99,6 +109,11 @@ class RandomAccessFileRASource extends RandomAccessSource {
   @override
   Future<void> setPosition(int position) async {
     await _file.setPosition(position);
+  }
+
+  @override
+  Future<Uint8List> readToEnd() async {
+    return _file.read(await _file.length());
   }
 
   @override
