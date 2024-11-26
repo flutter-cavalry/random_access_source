@@ -13,7 +13,7 @@ Future<RandomAccessSource> _rafSource() async {
     await File(tmp).writeAsBytes([1, 2, 3, 4, 5]);
     _tmpFile = tmp;
   }
-  return RandomAccessFileRASource.open(_tmpFile!);
+  return FileRASource.open(_tmpFile!);
 }
 
 void main() {

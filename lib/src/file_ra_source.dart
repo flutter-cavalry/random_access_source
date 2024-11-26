@@ -3,14 +3,14 @@ import 'dart:typed_data';
 
 import '../random_access_source.dart';
 
-class RandomAccessFileRASource extends RandomAccessSource {
+class FileRASource extends RandomAccessSource {
   final RandomAccessFile _file;
 
-  RandomAccessFileRASource(this._file);
+  FileRASource(this._file);
 
-  static Future<RandomAccessFileRASource> open(String path) async {
+  static Future<FileRASource> open(String path) async {
     final file = await File(path).open();
-    return RandomAccessFileRASource(file);
+    return FileRASource(file);
   }
 
   @override

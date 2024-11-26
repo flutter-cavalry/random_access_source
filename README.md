@@ -35,4 +35,4 @@ abstract class RandomAccessSource {
 Implementations:
 
 - `BytesRASource` for `Uint8List` data
-- `RandomAccessFileRASource` for `RandomAccessFile` data
+- `FileRASource` for `RandomAccessFile` data
