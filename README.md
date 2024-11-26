@@ -3,7 +3,7 @@
 [![pub package](https://img.shields.io/pub/v/random_access_source.svg)](https://pub.dev/packages/random_access_source)
 [![Build Status](https://github.com/flutter-cavalry/random_access_source/workflows/Dart/badge.svg)](https://github.com/flutter-cavalry/random_access_source/actions)
 
-Shared interfaces for random access data
+A shared interface for common random access data.
 
 ## Usage
 
@@ -34,5 +34,5 @@ abstract class RandomAccessSource {
 
 Implementations:
 
-- `BytesRASource` for `Uint8List` data
-- `FileRASource` for `RandomAccessFile` data
+- `BytesRASource` for `Uint8List`.
+- `FileRASource` for `RandomAccessFile`.

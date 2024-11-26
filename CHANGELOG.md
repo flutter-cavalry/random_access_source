@@ -1,3 +1,8 @@
+## 2.0.0
+
+- **BREAKING** Rename `RandomAccessFileRASource` to `FileRASource`.
+- Add `SyncBytesRASource`.
+
 ## 1.2.0
 
 - Add `readToEnd`.
