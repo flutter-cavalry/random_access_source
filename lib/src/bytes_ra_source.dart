@@ -3,26 +3,66 @@ import 'dart:typed_data';
 import '../random_access_source.dart';
 
 class BytesRASource extends RandomAccessSource {
-  final Uint8List _bytes;
-  int _position = 0;
+  late final SyncBytesRASource _syncSource;
 
-  BytesRASource(this._bytes);
+  Uint8List get bytes => _syncSource._bytes;
+
+  BytesRASource(Uint8List bytes) {
+    _syncSource = SyncBytesRASource(bytes);
+  }
 
   @override
   Future<int> length() async {
-    return _bytes.length;
+    return bytes.length;
   }
 
   @override
   Future<int> readByte() async {
+    return _syncSource.readByte();
+  }
+
+  @override
+  Future<Uint8List> read(int length) async {
+    return _syncSource.read(length);
+  }
+
+  @override
+  Future<int> position() async {
+    return _syncSource.position();
+  }
+
+  @override
+  Future<void> setPosition(int position) async {
+    _syncSource.setPosition(position);
+  }
+
+  @override
+  Future<Uint8List> readToEnd() async {
+    return _syncSource.readToEnd();
+  }
+
+  @override
+  Future<void> close() async {}
+}
+
+class SyncBytesRASource {
+  final Uint8List _bytes;
+  int _position = 0;
+
+  SyncBytesRASource(this._bytes);
+
+  int length() {
+    return _bytes.length;
+  }
+
+  int readByte() {
     if (_position >= _bytes.length) {
       return -1;
     }
     return _bytes[_position++];
   }
 
-  @override
-  Future<Uint8List> read(int length) async {
+  Uint8List read(int length) {
     if (_position >= _bytes.length) {
       return Uint8List(0);
     }
@@ -32,23 +72,17 @@ class BytesRASource extends RandomAccessSource {
     return result;
   }
 
-  @override
-  Future<int> position() async {
+  int position() {
     return _position;
   }
 
-  @override
-  Future<void> setPosition(int position) async {
+  void setPosition(int position) {
     _position = position;
   }
 
-  @override
-  Future<Uint8List> readToEnd() async {
+  Uint8List readToEnd() {
     final result = Uint8List.sublistView(_bytes, _position);
     _position = _bytes.length;
     return result;
   }
-
-  @override
-  Future<void> close() async {}
 }
