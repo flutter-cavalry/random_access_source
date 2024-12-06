@@ -1,3 +1,7 @@
+## 2.1.0
+
+- Add `close` to `RandomAccessBinaryReader`.
+
 ## 2.0.0
 
 - **BREAKING** Rename `RandomAccessFileRASource` to `FileRASource`.

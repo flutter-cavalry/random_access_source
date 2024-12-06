@@ -79,4 +79,8 @@ class RandomAccessBinaryReader {
     final data = await mustReadBytes(8);
     return ByteData.sublistView(data).getUint64(0, ed);
   }
+
+  Future<void> close() {
+    return source.close();
+  }
 }
