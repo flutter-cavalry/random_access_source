@@ -52,7 +52,7 @@ void main() {
   test('Position', () async {
     final src = _bytesSource();
     expect(src.position(), 0);
-    src.setPosition(2);
+    src.seek(2);
     expect(src.position(), 2);
     expect(src.readByte(), 3);
   });
@@ -65,7 +65,7 @@ void main() {
 
   test('ReadToEnd (halfway)', () async {
     final src = _bytesSource();
-    src.setPosition(2);
+    src.seek(2);
     expect(src.readToEnd(), Uint8List.fromList([3, 4, 5]));
     expect(src.position(), 5);
   });

@@ -32,8 +32,8 @@ class BytesRASource extends RandomAccessSource {
   }
 
   @override
-  Future<void> setPosition(int position) async {
-    _syncSource.setPosition(position);
+  Future<void> seek(int position) async {
+    _syncSource.seek(position);
   }
 
   @override
@@ -76,7 +76,7 @@ class SyncBytesRASource {
     return _position;
   }
 
-  void setPosition(int position) {
+  void seek(int position) {
     _position = position;
   }
 

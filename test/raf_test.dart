@@ -64,7 +64,7 @@ void main() {
   test('Position', () async {
     final src = await _rafSource();
     expect(await src.position(), 0);
-    await src.setPosition(2);
+    await src.seek(2);
     expect(await src.position(), 2);
     expect(await src.readByte(), 3);
     await src.close();
@@ -79,7 +79,7 @@ void main() {
 
   test('ReadToEnd (halfway)', () async {
     final src = await _rafSource();
-    await src.setPosition(2);
+    await src.seek(2);
     expect(await src.readToEnd(), Uint8List.fromList([3, 4, 5]));
     expect(await src.position(), 5);
     await src.close();

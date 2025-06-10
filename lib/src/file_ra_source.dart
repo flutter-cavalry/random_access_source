@@ -34,7 +34,7 @@ class FileRASource extends RandomAccessSource {
   }
 
   @override
-  Future<void> setPosition(int position) async {
+  Future<void> seek(int position) async {
     await _file.setPosition(position);
   }
 

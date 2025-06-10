@@ -25,7 +25,7 @@ abstract class RandomAccessSource {
   Future<int> position();
 
   /// Sets the current position in the source.
-  Future<void> setPosition(int position);
+  Future<void> seek(int position);
 
   /// Closes the source.
   Future<void> close();
