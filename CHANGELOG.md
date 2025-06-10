@@ -1,3 +1,7 @@
+## 2.2.1
+
+- Add `mustRead`.
+
 ## 2.2.0
 
 - Remove undocumented binary reader.

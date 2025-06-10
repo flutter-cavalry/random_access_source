@@ -22,4 +22,14 @@ abstract class RandomAccessSource {
 
   /// Closes the source.
   Future<void> close();
+
+  /// Reads a specific number of bytes, ensuring that the exact number is read.
+  /// Throws an exception if the number of bytes read is not equal to [length].
+  Future<Uint8List> mustRead(int length) async {
+    final bytes = await read(length);
+    if (bytes.length != length) {
+      throw Exception('Failed to read $length bytes, got ${bytes.length}');
+    }
+    return bytes;
+  }
 }
