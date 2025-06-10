@@ -22,8 +22,8 @@ class BytesRASource extends RandomAccessSource {
   }
 
   @override
-  Future<Uint8List> read(int length) async {
-    return _syncSource.read(length);
+  Future<Uint8List> read(int count) async {
+    return _syncSource.read(count);
   }
 
   @override

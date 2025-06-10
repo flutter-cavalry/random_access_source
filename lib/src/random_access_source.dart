@@ -9,7 +9,7 @@ abstract class RandomAccessSource {
   Future<int> readByte();
 
   /// Reads an array of bytes from the source.
-  Future<Uint8List> read(int length);
+  Future<Uint8List> read(int count);
 
   /// Gets the current position in the source.
   Future<int> position();
@@ -20,8 +20,20 @@ abstract class RandomAccessSource {
   /// Reads all the remaining bytes from the source.
   Future<Uint8List> readToEnd();
 
-  /// Closes the source.
-  Future<void> close();
+  /// Skips a number of bytes in the source.
+  /// Returns the number of bytes actually skipped.
+  Future<int> skip(int count) async {
+    final currentPosition = await position();
+    final fileLength = await length();
+
+    // Calculate the target position clamped within the file boundaries
+    final targetPosition = (currentPosition + count).clamp(0, fileLength);
+    await seek(targetPosition);
+
+    // Calculate the actual bytes skipped
+    final actualSkipped = targetPosition - currentPosition;
+    return actualSkipped;
+  }
 
   /// Reads a specific number of bytes, ensuring that the exact number is read.
   /// Throws an exception if the number of bytes read is not equal to [length].
@@ -32,4 +44,16 @@ abstract class RandomAccessSource {
     }
     return bytes;
   }
+
+  /// Skips a specific number of bytes, ensuring that the exact number is skipped.
+  /// Throws an exception if the number of bytes skipped is not equal to [length].
+  Future<void> mustSkip(int length) async {
+    final count = await skip(length);
+    if (count != length) {
+      throw Exception('Failed to skip $length bytes, skipped $count bytes');
+    }
+  }
+
+  /// Closes the source.
+  Future<void> close();
 }

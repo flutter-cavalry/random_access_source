@@ -75,4 +75,28 @@ void main() {
     expect(await src.position(), 5);
     await src.close();
   });
+
+  test('Skip (less than available)', () async {
+    final src = await _bytesSource();
+    expect(await src.skip(2), 2);
+    expect(await src.position(), 2);
+    expect(await src.readByte(), 3);
+    await src.close();
+  });
+
+  test('Skip (more than available)', () async {
+    final src = await _bytesSource();
+    expect(await src.skip(10), 5);
+    expect(await src.position(), 5);
+    expect(await src.readByte(), -1);
+    await src.close();
+  });
+
+  test('Skip (exactly available)', () async {
+    final src = await _bytesSource();
+    expect(await src.skip(5), 5);
+    expect(await src.position(), 5);
+    expect(await src.readByte(), -1);
+    await src.close();
+  });
 }

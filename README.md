@@ -19,13 +19,28 @@ abstract class RandomAccessSource {
   Future<int> readByte();
 
   /// Reads an array of bytes from the source.
-  Future<Uint8List> read(int length);
+  Future<Uint8List> read(int count);
 
   /// Gets the current position in the source.
   Future<int> position();
 
   /// Sets the current position in the source.
   Future<void> seek(int position);
+
+  /// Reads all the remaining bytes from the source.
+  Future<Uint8List> readToEnd();
+
+  /// Skips a number of bytes in the source.
+  /// Returns the number of bytes actually skipped.
+  Future<int> skip(int count);
+
+  /// Reads a specific number of bytes, ensuring that the exact number is read.
+  /// Throws an exception if the number of bytes read is not equal to [length].
+  Future<Uint8List> mustRead(int length);
+
+  /// Skips a specific number of bytes, ensuring that the exact number is skipped.
+  /// Throws an exception if the number of bytes skipped is not equal to [length].
+  Future<void> mustSkip(int length);
 
   /// Closes the source.
   Future<void> close();

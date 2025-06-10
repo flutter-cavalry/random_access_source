@@ -24,8 +24,8 @@ class FileRASource extends RandomAccessSource {
   }
 
   @override
-  Future<Uint8List> read(int length) async {
-    return _file.read(length);
+  Future<Uint8List> read(int count) async {
+    return _file.read(count);
   }
 
   @override
