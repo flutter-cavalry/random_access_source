@@ -1,3 +1,8 @@
+## 3.0.0
+
+- Add `skip` method.
+- Rename `setPosition` to `seek`.
+
 ## 2.2.1
 
 - Add `mustRead`.
