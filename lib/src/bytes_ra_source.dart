@@ -12,34 +12,22 @@ class BytesRASource extends RandomAccessSource {
   }
 
   @override
-  Future<int> length() async {
-    return bytes.length;
-  }
+  Future<int> length() async => bytes.length;
 
   @override
-  Future<int> readByte() async {
-    return _syncSource.readByte();
-  }
+  Future<int> readByte() async => _syncSource.readByte();
 
   @override
-  Future<Uint8List> read(int count) async {
-    return _syncSource.read(count);
-  }
+  Future<Uint8List> read(int count) async => _syncSource.read(count);
 
   @override
-  Future<int> position() async {
-    return _syncSource.position();
-  }
+  Future<int> position() async => _syncSource.position();
 
   @override
-  Future<void> seek(int position) async {
-    _syncSource.seek(position);
-  }
+  Future<void> seek(int position) async => _syncSource.seek(position);
 
   @override
-  Future<Uint8List> readToEnd() async {
-    return _syncSource.readToEnd();
-  }
+  Future<Uint8List> readToEnd() async => _syncSource.readToEnd();
 
   @override
   Future<void> close() async {}

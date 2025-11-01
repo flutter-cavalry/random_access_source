@@ -1,3 +1,7 @@
+## 3.1.0
+
+- Add support for Web patforms + corresponding tests.
+
 ## 3.0.0
 
 - Add `skip` method.

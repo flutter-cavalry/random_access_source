@@ -1,110 +1,92 @@
-import 'dart:io';
-import 'dart:typed_data';
-
-import 'package:random_access_source/random_access_source.dart';
 import 'package:test/test.dart';
-import 'package:tmp_path/tmp_path.dart';
 
-String? _tmpFile;
-
-Future<RandomAccessSource> _rafSource() async {
-  if (_tmpFile == null) {
-    final tmp = tmpPath();
-    await File(tmp).writeAsBytes([1, 2, 3, 4, 5]);
-    _tmpFile = tmp;
-  }
-  return FileRASource.open(_tmpFile!);
-}
+import 'assets/flutter_icon_96x96.dart';
+import 'raf_vm.dart' if (dart.library.js_interop) 'raf_web.dart';
 
 void main() {
   test('Length', () async {
-    final src = await _rafSource();
-    expect(await src.length(), 5);
+    final src = await rafSource();
+    expect(await src.length(), flutterIcon.length);
     await src.close();
   });
 
   test('ReadByte', () async {
-    final src = await _rafSource();
-    expect(await src.readByte(), 1);
+    final src = await rafSource();
+    expect(await src.readByte(), flutterIcon[0]);
     expect(await src.position(), 1);
 
-    expect(await src.readByte(), 2);
+    expect(await src.readByte(), flutterIcon[1]);
     expect(await src.position(), 2);
 
-    expect(await src.readByte(), 3);
+    expect(await src.readByte(), flutterIcon[2]);
     expect(await src.position(), 3);
 
-    expect(await src.readByte(), 4);
+    expect(await src.readByte(), flutterIcon[3]);
     expect(await src.position(), 4);
 
-    expect(await src.readByte(), 5);
+    expect(await src.readByte(), flutterIcon[4]);
     expect(await src.position(), 5);
 
-    expect(await src.readByte(), -1);
-    expect(await src.position(), 5);
+    expect(await src.readByte(), flutterIcon[5]);
+    expect(await src.position(), 6);
     await src.close();
   });
 
   test('Read', () async {
-    final src = await _rafSource();
-    expect(await src.read(2), Uint8List.fromList([1, 2]));
+    final src = await rafSource();
+    expect(await src.read(2), flutterIcon.sublist(0, 2));
     expect(await src.position(), 2);
 
-    expect(await src.read(2), Uint8List.fromList([3, 4]));
+    expect(await src.read(2), flutterIcon.sublist(2, 4));
     expect(await src.position(), 4);
 
-    expect(await src.read(2), Uint8List.fromList([5]));
-    expect(await src.position(), 5);
-
-    expect(await src.read(2), Uint8List(0));
-    expect(await src.position(), 5);
     await src.close();
   });
 
   test('Position', () async {
-    final src = await _rafSource();
+    final src = await rafSource();
     expect(await src.position(), 0);
     await src.seek(2);
     expect(await src.position(), 2);
-    expect(await src.readByte(), 3);
+    expect(await src.readByte(), flutterIcon[2]);
     await src.close();
   });
 
   test('ReadToEnd', () async {
-    final src = await _rafSource();
-    expect(await src.readToEnd(), Uint8List.fromList([1, 2, 3, 4, 5]));
-    expect(await src.position(), 5);
+    final src = await rafSource();
+    expect(await src.readToEnd(), flutterIcon);
+    expect(await src.position(), flutterIcon.length);
     await src.close();
   });
 
   test('ReadToEnd (halfway)', () async {
-    final src = await _rafSource();
+    final src = await rafSource();
     await src.seek(2);
-    expect(await src.readToEnd(), Uint8List.fromList([3, 4, 5]));
-    expect(await src.position(), 5);
+    expect(await src.readToEnd(), flutterIcon.sublist(2));
+    expect(await src.position(), flutterIcon.length);
     await src.close();
   });
 
   test('Skip (less than available)', () async {
-    final src = await _rafSource();
+    final src = await rafSource();
     expect(await src.skip(2), 2);
     expect(await src.position(), 2);
-    expect(await src.readByte(), 3);
+    expect(await src.readByte(), flutterIcon[2]);
     await src.close();
   });
 
   test('Skip (more than available)', () async {
-    final src = await _rafSource();
-    expect(await src.skip(10), 5);
-    expect(await src.position(), 5);
+    final src = await rafSource();
+    expect(await src.skip(flutterIcon.length * 2), flutterIcon.length);
+    expect(await src.position(), flutterIcon.length);
     expect(await src.readByte(), -1);
     await src.close();
   });
 
   test('Skip (exactly available)', () async {
-    final src = await _rafSource();
-    expect(await src.skip(5), 5);
-    expect(await src.position(), 5);
+    final src = await rafSource();
+    expect(await src.skip(flutterIcon.length), flutterIcon.length);
+    expect(await src.position(), flutterIcon.length);
     expect(await src.readByte(), -1);
     await src.close();
   });

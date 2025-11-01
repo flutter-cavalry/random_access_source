@@ -1,10 +1,13 @@
 name: random_access_source
 description: A shared interface for common random access data.
-version: 3.0.0
+version: 3.1.0
 repository: https://github.com/flutter-cavalry/random_access_source
 
 environment:
   sdk: ^3.4.4
+
+dependencies:
+  web: ^1.1.1
 
 dev_dependencies:
   mgenware_dart_lints: ^8.0.0
