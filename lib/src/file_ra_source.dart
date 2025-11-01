@@ -1,50 +1,13 @@
-import 'dart:io';
-import 'dart:typed_data';
-
 import '../random_access_source.dart';
+import 'file_ra_source_stub.dart'
+    if (dart.library.io) 'file_ra_source_vm.dart'
+    if (dart.library.js_interop) 'file_ra_source_web.dart' as impl;
 
-class FileRASource extends RandomAccessSource {
-  final RandomAccessFile _file;
+typedef PlatformFile = impl.PlatformFile;
 
-  FileRASource(this._file);
+abstract class FileRASource extends RandomAccessSource {
+  static Future<FileRASource> open(String path) => impl.FileRASource.open(path);
 
-  static Future<FileRASource> open(String path) async {
-    final file = await File(path).open();
-    return FileRASource(file);
-  }
-
-  @override
-  Future<int> length() async {
-    return _file.length();
-  }
-
-  @override
-  Future<int> readByte() async {
-    return _file.readByte();
-  }
-
-  @override
-  Future<Uint8List> read(int count) async {
-    return _file.read(count);
-  }
-
-  @override
-  Future<int> position() async {
-    return _file.position();
-  }
-
-  @override
-  Future<void> seek(int position) async {
-    await _file.setPosition(position);
-  }
-
-  @override
-  Future<Uint8List> readToEnd() async {
-    return _file.read(await _file.length());
-  }
-
-  @override
-  Future<void> close() async {
-    await _file.close();
-  }
+  static Future<FileRASource> load(PlatformFile file) =>
+      impl.FileRASource.load(file);
 }

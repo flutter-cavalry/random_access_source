@@ -50,4 +50,4 @@ abstract class RandomAccessSource {
 Implementations:
 
 - `BytesRASource` for `Uint8List`.
-- `FileRASource` for `RandomAccessFile`.
+- `FileRASource` for `RandomAccessFile` (`dart:io`) and `Blob` (`package:web`).
