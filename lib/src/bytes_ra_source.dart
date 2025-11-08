@@ -7,6 +7,7 @@ class BytesRASource extends RandomAccessSource {
 
   Uint8List get bytes => _syncSource._bytes;
 
+  /// Creates a [BytesRASource] from the given [bytes].
   BytesRASource(Uint8List bytes) {
     _syncSource = SyncBytesRASource(bytes);
   }

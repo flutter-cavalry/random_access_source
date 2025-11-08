@@ -6,8 +6,10 @@ import 'file_ra_source_stub.dart'
 typedef PlatformFile = impl.PlatformFile;
 
 abstract class FileRASource extends RandomAccessSource {
+  /// Opens a [FileRASource] from a file path.
   static Future<FileRASource> open(String path) => impl.FileRASource.open(path);
 
+  /// Loads a [FileRASource] from a [PlatformFile].
   static Future<FileRASource> load(PlatformFile file) =>
       impl.FileRASource.load(file);
 }
