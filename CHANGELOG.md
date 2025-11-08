@@ -1,3 +1,7 @@
+## 3.1.2
+
+- Update docs.
+
 ## 3.1.0
 
 - Add support for Web patforms + corresponding tests.
