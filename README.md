@@ -49,8 +49,8 @@ abstract class RandomAccessSource {
 
 Implementations:
 
-- `BytesRASource` for `Uint8List`.
+- Use `BytesRASource` for `Uint8List`.
   - `BytesRASource(Uint8List bytes)`: creates a `BytesRASource` from the given `bytes`.
-- `FileRASource` for `RandomAccessFile` (`dart:io`) and `Blob` (`package:web`).
+- Use `FileRASource` for `File` (`dart:io`) and `Blob` (`package:web`).
   - `await FileRASource.open(path)`: Opens a `FileRASource` from a file path.
   - `await FileRASource.load(file)`: Loads a `FileRASource` from a `PlatformFile`.
