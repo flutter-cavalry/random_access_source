@@ -7,9 +7,10 @@ typedef PlatformFile = impl.PlatformFile;
 
 abstract class FileRASource extends RandomAccessSource {
   /// Opens a [FileRASource] from a file path.
-  static Future<FileRASource> open(String path) => impl.FileRASource.open(path);
+  static Future<FileRASource> openPath(String path) =>
+      impl.FileRASource.open(path);
 
   /// Loads a [FileRASource] from a [PlatformFile].
-  static Future<FileRASource> load(PlatformFile file) =>
+  static Future<FileRASource> loadFile(PlatformFile file) =>
       impl.FileRASource.load(file);
 }

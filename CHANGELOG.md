@@ -1,3 +1,8 @@
+## 4.0.0
+
+- **BREAKING** Rename `FileRASource.open` to `FileRASource.openPath`.
+- **BREAKING** Rename `FileRASource.load` to `FileRASource.loadFile`.
+
 ## 3.1.2
 
 - Update docs.
