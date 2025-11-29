@@ -10,10 +10,10 @@ class FileRASource extends base.FileRASource {
 
   FileRASource._(this._file);
 
-  static Future<FileRASource> open(String path) async =>
+  static Future<FileRASource> openPath(String path) async =>
       FileRASource._(await io.File(path).open());
 
-  static Future<FileRASource> load(PlatformFile file) async =>
+  static Future<FileRASource> loadFile(PlatformFile file) async =>
       FileRASource._(await file.open());
 
   @override

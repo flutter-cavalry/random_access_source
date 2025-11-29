@@ -1,3 +1,7 @@
+## 4.0.1
+
+- Add fallback for renamed methods.
+
 ## 4.0.0
 
 - **BREAKING** Rename `FileRASource.open` to `FileRASource.openPath`.

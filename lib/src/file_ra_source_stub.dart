@@ -5,10 +5,10 @@ import 'file_ra_source.dart' as base;
 typedef PlatformFile = Object;
 
 abstract class FileRASource extends base.FileRASource {
-  static Future<FileRASource> open(String path) =>
+  static Future<FileRASource> openPath(String path) =>
       throw UnsupportedError('Not supported on this platform.');
 
-  static Future<FileRASource> load(PlatformFile file) =>
+  static Future<FileRASource> loadFile(PlatformFile file) =>
       throw UnsupportedError('Not supported on this platform.');
 
   @override

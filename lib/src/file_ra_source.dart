@@ -8,9 +8,19 @@ typedef PlatformFile = impl.PlatformFile;
 abstract class FileRASource extends RandomAccessSource {
   /// Opens a [FileRASource] from a file path.
   static Future<FileRASource> openPath(String path) =>
-      impl.FileRASource.open(path);
+      impl.FileRASource.openPath(path);
 
   /// Loads a [FileRASource] from a [PlatformFile].
   static Future<FileRASource> loadFile(PlatformFile file) =>
-      impl.FileRASource.load(file);
+      impl.FileRASource.loadFile(file);
+
+  /// Opens a [FileRASource] from a file path.
+  @Deprecated('Renamed to openPath')
+  static Future<FileRASource> open(String path) =>
+      impl.FileRASource.openPath(path);
+
+  /// Loads a [FileRASource] from a [PlatformFile].
+  @Deprecated('Renamed to loadFile')
+  static Future<FileRASource> load(PlatformFile file) =>
+      impl.FileRASource.loadFile(file);
 }

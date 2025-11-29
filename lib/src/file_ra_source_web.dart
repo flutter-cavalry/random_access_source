@@ -16,13 +16,13 @@ class FileRASource extends base.FileRASource {
 
   FileRASource._(this._bytes);
 
-  static Future<base.FileRASource> open(String path) async {
+  static Future<base.FileRASource> openPath(String path) async {
     final res = await _fetch(path.toJS).toDart;
     final bytes = (await res.bytes().toDart).toDart;
     return FileRASource._(BytesRASource(bytes));
   }
 
-  static Future<FileRASource> load(PlatformFile file) async {
+  static Future<FileRASource> loadFile(PlatformFile file) async {
     final bytes = (await file.arrayBuffer().toDart).toDart.asUint8List();
     return FileRASource._(BytesRASource(bytes));
   }
