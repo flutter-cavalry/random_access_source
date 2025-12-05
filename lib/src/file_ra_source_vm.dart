@@ -26,6 +26,10 @@ class FileRASource extends base.FileRASource {
   Future<Uint8List> read(int count) => _file.read(count);
 
   @override
+  Future<int> readInto(List<int> buffer, int offset, int count) =>
+      _file.readInto(buffer, offset, offset + count);
+
+  @override
   Future<int> position() => _file.position();
 
   @override

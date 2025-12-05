@@ -22,6 +22,10 @@ class BytesRASource extends RandomAccessSource {
   Future<Uint8List> read(int count) async => _syncSource.read(count);
 
   @override
+  Future<int> readInto(List<int> buffer, int offset, int count) async =>
+      _syncSource.readInto(buffer, offset, count);
+
+  @override
   Future<int> position() async => _syncSource.position();
 
   @override
@@ -59,6 +63,17 @@ class SyncBytesRASource {
     final result = Uint8List.sublistView(_bytes, _position, end);
     _position = end;
     return result;
+  }
+
+  int readInto(List<int> buffer, int offset, int count) {
+    if (_position >= _bytes.length) {
+      return 0;
+    }
+    final end = (_position + count).clamp(0, _bytes.length);
+    final bytesToRead = end - _position;
+    buffer.setRange(offset, offset + bytesToRead, _bytes, _position);
+    _position = end;
+    return bytesToRead;
   }
 
   int position() {

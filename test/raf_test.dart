@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:test/test.dart';
 
 import 'assets/flutter_icon_96x96.dart';
@@ -38,6 +40,23 @@ void main() {
     expect(await src.position(), 2);
 
     expect(await src.read(2), flutterIcon.sublist(2, 4));
+    expect(await src.position(), 4);
+
+    await src.close();
+  });
+
+  test('ReadInto', () async {
+    final src = await rafSource();
+    final buffer = Uint8List(4);
+
+    var bytesRead = await src.readInto(buffer, 0, 2);
+    expect(bytesRead, 2);
+    expect(buffer.sublist(0, 2), flutterIcon.sublist(0, 2));
+    expect(await src.position(), 2);
+
+    bytesRead = await src.readInto(buffer, 2, 2);
+    expect(bytesRead, 2);
+    expect(buffer.sublist(2, 4), flutterIcon.sublist(2, 4));
     expect(await src.position(), 4);
 
     await src.close();

@@ -11,6 +11,9 @@ abstract class RandomAccessSource {
   /// Reads an array of bytes from the source.
   Future<Uint8List> read(int count);
 
+  /// Reads bytes into the provided buffer.
+  Future<int> readInto(List<int> buffer, int offset, int count);
+
   /// Gets the current position in the source.
   Future<int> position();
 

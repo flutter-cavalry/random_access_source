@@ -52,6 +52,31 @@ void main() {
     await src.close();
   });
 
+  test('ReadInto', () async {
+    final src = await _bytesSource();
+    final buffer = Uint8List(4);
+
+    var bytesRead = await src.readInto(buffer, 0, 2);
+    expect(bytesRead, 2);
+    expect(buffer.sublist(0, 2), Uint8List.fromList([1, 2]));
+    expect(await src.position(), 2);
+
+    bytesRead = await src.readInto(buffer, 2, 2);
+    expect(bytesRead, 2);
+    expect(buffer.sublist(2, 4), Uint8List.fromList([3, 4]));
+    expect(await src.position(), 4);
+
+    bytesRead = await src.readInto(buffer, 0, 4);
+    expect(bytesRead, 1);
+    expect(buffer.sublist(0, 1), Uint8List.fromList([5]));
+    expect(await src.position(), 5);
+
+    bytesRead = await src.readInto(buffer, 0, 4);
+    expect(bytesRead, 0);
+    expect(await src.position(), 5);
+    await src.close();
+  });
+
   test('Position', () async {
     final src = await _bytesSource();
     expect(await src.position(), 0);

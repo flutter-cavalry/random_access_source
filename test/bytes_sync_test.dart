@@ -49,6 +49,30 @@ void main() {
     expect(src.position(), 5);
   });
 
+  test('ReadInto', () async {
+    final src = _bytesSource();
+    final buffer = Uint8List(4);
+
+    var bytesRead = src.readInto(buffer, 0, 2);
+    expect(bytesRead, 2);
+    expect(buffer.sublist(0, 2), Uint8List.fromList([1, 2]));
+    expect(src.position(), 2);
+
+    bytesRead = src.readInto(buffer, 2, 2);
+    expect(bytesRead, 2);
+    expect(buffer.sublist(2, 4), Uint8List.fromList([3, 4]));
+    expect(src.position(), 4);
+
+    bytesRead = src.readInto(buffer, 0, 4);
+    expect(bytesRead, 1);
+    expect(buffer.sublist(0, 1), Uint8List.fromList([5]));
+    expect(src.position(), 5);
+
+    bytesRead = src.readInto(buffer, 0, 4);
+    expect(bytesRead, 0);
+    expect(src.position(), 5);
+  });
+
   test('Position', () async {
     final src = _bytesSource();
     expect(src.position(), 0);
