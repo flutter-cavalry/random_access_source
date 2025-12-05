@@ -1,3 +1,7 @@
+## 4.1.0
+
+- Add `readInto` method.
+
 ## 4.0.1
 
 - Add fallback for renamed methods.
