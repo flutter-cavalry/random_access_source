@@ -109,4 +109,29 @@ void main() {
     expect(await src.readByte(), -1);
     await src.close();
   });
+
+  test('RestorePosition', () async {
+    final src = await rafSource();
+    await src.seek(10);
+    expect(await src.position(), 10);
+
+    await src.restorePosition(() async {
+      expect(await src.position(), 10);
+      expect(await src.readByte(), flutterIcon[10]);
+      expect(await src.position(), 11);
+    });
+    expect(await src.position(), 10);
+
+    try {
+      await src.restorePosition(() async {
+        await src.seek(20);
+        throw Exception('Test Exception');
+      });
+    } catch (e) {
+      // Expected exception
+    }
+    expect(await src.position(), 10);
+
+    await src.close();
+  });
 }

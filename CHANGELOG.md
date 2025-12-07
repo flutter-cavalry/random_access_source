@@ -1,3 +1,7 @@
+## 4.2.0
+
+- Add `restorePosition` method.
+
 ## 4.1.0
 
 - Add `readInto` method.
