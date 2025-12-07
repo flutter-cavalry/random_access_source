@@ -61,10 +61,10 @@ abstract class RandomAccessSource {
   Future<void> close();
 
   /// Restores the position after executing the given [action].
-  Future<void> restorePosition<T>(Future<T> Function() action) async {
+  Future<T> restorePosition<T>(Future<T> Function() action) async {
     final currentPosition = await position();
     try {
-      await action();
+      return await action();
     } finally {
       await seek(currentPosition);
     }

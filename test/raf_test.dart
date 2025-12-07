@@ -115,12 +115,14 @@ void main() {
     await src.seek(10);
     expect(await src.position(), 10);
 
-    await src.restorePosition(() async {
+    final res1 = await src.restorePosition(() async {
       expect(await src.position(), 10);
       expect(await src.readByte(), flutterIcon[10]);
       expect(await src.position(), 11);
+      return 'test1';
     });
     expect(await src.position(), 10);
+    expect(res1, 'test1');
 
     try {
       await src.restorePosition(() async {
