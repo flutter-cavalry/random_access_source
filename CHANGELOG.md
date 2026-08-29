@@ -1,3 +1,7 @@
+## 4.3.0
+
+- Add read-ahead buffering for small random-access reads (@neeraj-pilot)
+
 ## 4.2.0
 
 - Add `restorePosition` method.
