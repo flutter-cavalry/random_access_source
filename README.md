@@ -54,3 +54,5 @@ Implementations:
 - Use `FileRASource` for `File` (`dart:io`) and `Blob` (`package:web`).
   - `await FileRASource.openPath(path)`: Opens a `FileRASource` from a file path.
   - `await FileRASource.loadFile(file)`: Loads a `FileRASource` from a `PlatformFile`.
+- Wrap a source with `ReadAheadRASource` to coalesce small, nearby reads.
+  - `ReadAheadRASource(source)`: Uses a 4 KiB read-ahead buffer.
