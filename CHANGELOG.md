@@ -1,3 +1,7 @@
+## 4.3.1
+
+- Add a `errorTag` in `mustRead` to specify the context of the error.
+
 ## 4.3.0
 
 - Add read-ahead buffering for small random-access reads (@neeraj-pilot)
