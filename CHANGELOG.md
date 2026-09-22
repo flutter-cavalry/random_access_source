@@ -1,3 +1,7 @@
+## 4.4.0
+
+- Add `OffsetRASource`.
+
 ## 4.3.1
 
 - Add a `errorTag` in `mustRead` to specify the context of the error.

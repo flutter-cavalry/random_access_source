@@ -56,3 +56,7 @@ Implementations:
   - `await FileRASource.loadFile(file)`: Loads a `FileRASource` from a `PlatformFile`.
 - Wrap a source with `ReadAheadRASource` to coalesce small, nearby reads.
   - `ReadAheadRASource(source)`: Uses a 4 KiB read-ahead buffer.
+- Wrap a source with `OffsetRASource` to treat embedded data as a standalone
+  source.
+  - `OffsetRASource(source, positionOffset: offset)`: Exposes `offset` as
+    position zero. The offset must be positive.
