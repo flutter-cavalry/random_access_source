@@ -52,6 +52,26 @@ void main() {
     await src.close();
   });
 
+  test('Read returns a Uint8List view', () async {
+    final src = await _bytesSource();
+    final bytes = await src.read(2);
+
+    expect(bytes, isA<Uint8List>());
+    bytes[0] = 9;
+    expect(src.bytes[0], 9);
+    await src.close();
+  });
+
+  test('MustRead returns a Uint8List view', () async {
+    final src = await _bytesSource();
+    final bytes = await src.mustRead(2);
+
+    expect(bytes, isA<Uint8List>());
+    bytes[0] = 9;
+    expect(src.bytes[0], 9);
+    await src.close();
+  });
+
   test('ReadInto', () async {
     final src = await _bytesSource();
     final buffer = Uint8List(4);
@@ -98,6 +118,16 @@ void main() {
     await src.seek(2);
     expect(await src.readToEnd(), Uint8List.fromList([3, 4, 5]));
     expect(await src.position(), 5);
+    await src.close();
+  });
+
+  test('ReadToEnd returns a Uint8List view', () async {
+    final src = await _bytesSource();
+    final bytes = await src.readToEnd();
+
+    expect(bytes, isA<Uint8List>());
+    bytes[0] = 9;
+    expect(src.bytes[0], 9);
     await src.close();
   });
 
