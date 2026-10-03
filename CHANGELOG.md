@@ -1,3 +1,7 @@
+## 5.0.0
+
+- **BREAKING** `seek` now rejects positions past EOF. Seeking to EOF remains valid.
+
 ## 4.4.0
 
 - Add `OffsetRASource`.
