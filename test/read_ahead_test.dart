@@ -11,7 +11,7 @@ void main() {
 
     expect(await buffered.readByte(), 0);
     expect(await buffered.read(2), [1, 2]);
-    await buffered.seek(1);
+    await buffered.mustSeek(1);
     expect(await buffered.read(2), [1, 2]);
     expect(source.reads, [4]);
     expect(source.seeks, [0]);
@@ -31,7 +31,7 @@ void main() {
 
   test('Starts at the wrapped source position', () async {
     final source = _TrackingSource(_bytes(6));
-    await source.seek(2);
+    await source.mustSeek(2);
     source.seeks.clear();
 
     final buffered = ReadAheadRASource(source, bufferSize: 2);
@@ -42,10 +42,10 @@ void main() {
 
   test('A seek before the first read overrides the wrapped position', () async {
     final source = _TrackingSource(_bytes(6));
-    await source.seek(2);
+    await source.mustSeek(2);
     final buffered = ReadAheadRASource(source, bufferSize: 2);
 
-    await buffered.seek(4);
+    await buffered.mustSeek(4);
     expect(await buffered.readByte(), 4);
   });
 
@@ -53,7 +53,7 @@ void main() {
     final source = _TrackingSource(_bytes(5));
     final buffered = ReadAheadRASource(source, bufferSize: 4);
 
-    await buffered.seek(2);
+    await buffered.mustSeek(2);
     expect(await buffered.readToEnd(), [2, 3, 4]);
     expect(await buffered.position(), 5);
     expect(await buffered.readByte(), -1);
@@ -67,7 +67,7 @@ void main() {
     expect(await buffered.read(4), [0, 1, 2, 3]);
     expect(await buffered.readByte(), 4);
     expect(await buffered.readByte(), -1);
-    await expectLater(buffered.seek(6), throwsRangeError);
+    await expectLater(buffered.mustSeek(6), throwsRangeError);
     expect(await buffered.position(), 5);
   });
 
@@ -86,14 +86,14 @@ void main() {
     final buffered = ReadAheadRASource(source, bufferSize: 4);
 
     expect(await buffered.read(2), [0, 1]);
-    await buffered.seek(6);
+    await buffered.mustSeek(6);
     source.failNextRead = true;
     await expectLater(buffered.readByte(), throwsStateError);
     expect(await buffered.position(), 6);
 
-    await buffered.seek(1);
+    await buffered.mustSeek(1);
     expect(await buffered.readByte(), 1);
-    await buffered.seek(6);
+    await buffered.mustSeek(6);
     expect(await buffered.readByte(), 6);
     expect(source.reads, [4, 4]);
   });
@@ -103,7 +103,7 @@ void main() {
     final buffered = ReadAheadRASource(source);
 
     await expectLater(buffered.read(-1), throwsRangeError);
-    await expectLater(buffered.seek(-1), throwsRangeError);
+    await expectLater(buffered.mustSeek(-1), throwsRangeError);
     for (final arguments in [(-1, 1), (0, -1), (1, 2)]) {
       await expectLater(
         buffered.readInto(Uint8List(2), arguments.$1, arguments.$2),
@@ -115,12 +115,20 @@ void main() {
     expect(source.reads, isEmpty);
   });
 
+  test('trySeek never throws when the source is closed', () async {
+    final buffered = ReadAheadRASource(_TrackingSource(_bytes(4)));
+    await buffered.close();
+
+    expect(await buffered.trySeek(0), isFalse);
+    await expectLater(buffered.mustSeek(0), throwsStateError);
+  });
+
   test('Reads into a range and stops at EOF', () async {
     final source = _TrackingSource(_bytes(4));
     final buffered = ReadAheadRASource(source);
     final destination = Uint8List.fromList([9, 9, 9, 9]);
 
-    await buffered.seek(3);
+    await buffered.mustSeek(3);
     expect(await buffered.readInto(destination, 1, 3), 1);
     expect(destination, [9, 3, 9, 9]);
     expect(await buffered.position(), 4);
@@ -165,7 +173,7 @@ void main() {
         await buffered.position();
       },
       () async {
-        await buffered.seek(0);
+        await buffered.mustSeek(0);
       },
       () async {
         await buffered.readToEnd();
@@ -242,8 +250,8 @@ class _TrackingSource extends RandomAccessSource {
   Future<Uint8List> readToEnd() => _source.readToEnd();
 
   @override
-  Future<void> seek(int position) async {
+  Future<void> seekCore(int position) async {
     seeks.add(position);
-    await _source.seek(position);
+    await _source.mustSeek(position);
   }
 }

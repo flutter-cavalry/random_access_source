@@ -65,12 +65,12 @@ void main() {
   test('Position', () async {
     final src = await rafSource();
     expect(await src.position(), 0);
-    await src.seek(2);
+    await src.mustSeek(2);
     expect(await src.position(), 2);
     expect(await src.readByte(), flutterIcon[2]);
-    await src.seek(flutterIcon.length);
+    await src.mustSeek(flutterIcon.length);
     expect(await src.position(), flutterIcon.length);
-    await expectLater(src.seek(flutterIcon.length + 1), throwsRangeError);
+    await expectLater(src.mustSeek(flutterIcon.length + 1), throwsRangeError);
     expect(await src.position(), flutterIcon.length);
     await src.close();
   });
@@ -84,7 +84,7 @@ void main() {
 
   test('ReadToEnd (halfway)', () async {
     final src = await rafSource();
-    await src.seek(2);
+    await src.mustSeek(2);
     expect(await src.readToEnd(), flutterIcon.sublist(2));
     expect(await src.position(), flutterIcon.length);
     await src.close();
@@ -116,7 +116,7 @@ void main() {
 
   test('RestorePosition', () async {
     final src = await rafSource();
-    await src.seek(10);
+    await src.mustSeek(10);
     expect(await src.position(), 10);
 
     final res1 = await src.restorePosition(() async {
@@ -130,7 +130,7 @@ void main() {
 
     try {
       await src.restorePosition(() async {
-        await src.seek(20);
+        await src.mustSeek(20);
         throw Exception('Test Exception');
       });
     } catch (e) {

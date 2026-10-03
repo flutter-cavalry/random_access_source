@@ -28,7 +28,7 @@ abstract class FileRASource extends base.FileRASource {
       throw UnsupportedError('Not supported on this platform.');
 
   @override
-  Future<void> seek(int position) =>
+  Future<void> seekCore(int position) =>
       throw UnsupportedError('Not supported on this platform.');
 
   @override

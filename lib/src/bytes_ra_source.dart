@@ -29,7 +29,8 @@ class BytesRASource extends RandomAccessSource {
   Future<int> position() async => _syncSource.position();
 
   @override
-  Future<void> seek(int position) async => _syncSource.seek(position);
+  Future<void> seekCore(int position) async =>
+      _syncSource._setPosition(position);
 
   @override
   Future<Uint8List> readToEnd() async => _syncSource.readToEnd();
@@ -80,10 +81,31 @@ class SyncBytesRASource {
     return _position;
   }
 
-  void seek(int position) {
-    if (position < 0 || position > _bytes.length) {
+  bool _isSeekPositionOOR(int position) => position < 0 || position > length();
+
+  /// Attempts to seek to [position], returning false if it cannot be reached.
+  /// This method never throws.
+  bool trySeek(int position) {
+    try {
+      if (_isSeekPositionOOR(position)) {
+        return false;
+      }
+      _setPosition(position);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  /// Seeks to [position], throwing if it is out of range or the seek fails.
+  void mustSeek(int position) {
+    if (_isSeekPositionOOR(position)) {
       throw RangeError.value(position, 'position');
     }
+    _setPosition(position);
+  }
+
+  void _setPosition(int position) {
     _position = position;
   }
 

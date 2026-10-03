@@ -44,7 +44,7 @@ class FileRASource extends base.FileRASource {
   Future<int> position() => _bytes.position();
 
   @override
-  Future<void> seek(int position) => _bytes.seek(position);
+  Future<void> seekCore(int position) => _bytes.seekCore(position);
 
   @override
   Future<Uint8List> readToEnd() => _bytes.readToEnd();

@@ -51,7 +51,7 @@ class ReadAheadRASource extends RandomAccessSource {
     final position = await _currentPosition();
     final bufferEnd = _bufferStart + _buffer.length;
     if (position < _bufferStart || position + count > bufferEnd) {
-      await _source.seek(position);
+      await _source.mustSeek(position);
       final buffer = await _source.read(math.max(_bufferSize, count));
       _buffer = buffer;
       _bufferStart = position;
@@ -89,12 +89,8 @@ class ReadAheadRASource extends RandomAccessSource {
   }
 
   @override
-  Future<void> seek(int position) async {
+  Future<void> seekCore(int position) async {
     _checkOpen();
-    final sourceLength = await length();
-    if (position < 0 || position > sourceLength) {
-      throw RangeError.value(position, 'position');
-    }
     _position = position;
   }
 
@@ -102,7 +98,7 @@ class ReadAheadRASource extends RandomAccessSource {
   Future<Uint8List> readToEnd() async {
     _checkOpen();
     final position = await _currentPosition();
-    await _source.seek(position);
+    await _source.mustSeek(position);
     final bytes = await _source.readToEnd();
     _position = position + bytes.length;
     return bytes;

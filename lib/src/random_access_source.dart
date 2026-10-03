@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+import 'package:meta/meta.dart';
+
 /// Base class for random access sources.
 abstract class RandomAccessSource {
   /// Gets the length of the source.
@@ -17,8 +19,39 @@ abstract class RandomAccessSource {
   /// Gets the current position in the source.
   Future<int> position();
 
-  /// Sets the current position in the source.
-  Future<void> seek(int position);
+  /// Sets the current position without checking whether [position] is valid.
+  ///
+  /// Do not call this directly; use [trySeek] or [mustSeek].
+  @protected
+  Future<void> seekCore(int position);
+
+  /// Returns whether [position] is outside the source boundaries.
+  Future<bool> _isSeekPositionOOR(int position) async {
+    final sourceLength = await length();
+    return position < 0 || position > sourceLength;
+  }
+
+  /// Attempts to seek to [position], returning false if it cannot be reached.
+  /// This method never throws.
+  Future<bool> trySeek(int position) async {
+    try {
+      if (await _isSeekPositionOOR(position)) {
+        return false;
+      }
+      await seekCore(position);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  /// Seeks to [position], throwing if it is out of range or the seek fails.
+  Future<void> mustSeek(int position) async {
+    if (await _isSeekPositionOOR(position)) {
+      throw RangeError.value(position, 'position');
+    }
+    await seekCore(position);
+  }
 
   /// Reads all the remaining bytes from the source.
   Future<Uint8List> readToEnd();
@@ -31,7 +64,7 @@ abstract class RandomAccessSource {
 
     // Calculate the target position clamped within the file boundaries
     final targetPosition = (currentPosition + count).clamp(0, fileLength);
-    await seek(targetPosition);
+    await mustSeek(targetPosition);
 
     // Calculate the actual bytes skipped
     final actualSkipped = targetPosition - currentPosition;
@@ -67,7 +100,7 @@ abstract class RandomAccessSource {
     try {
       return await action();
     } finally {
-      await seek(currentPosition);
+      await mustSeek(currentPosition);
     }
   }
 }

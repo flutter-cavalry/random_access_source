@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 void main() {
   test('Exposes the source from the configured offset', () async {
     final source = BytesRASource(Uint8List.fromList([0, 1, 2, 3, 4]));
-    await source.seek(2);
+    await source.mustSeek(2);
     final offset = OffsetRASource(source, positionOffset: 2);
 
     expect(await offset.length(), 3);
@@ -20,7 +20,7 @@ void main() {
     final source = BytesRASource(Uint8List.fromList([0, 1, 2, 3, 4]));
     final offset = OffsetRASource(source, positionOffset: 2);
 
-    await offset.seek(1);
+    await offset.mustSeek(1);
     expect(await source.position(), 3);
     expect(await offset.position(), 1);
     expect(await offset.readToEnd(), [3, 4]);
@@ -40,10 +40,10 @@ void main() {
 
   test('Rejects negative logical positions', () async {
     final source = BytesRASource(Uint8List(2));
-    await source.seek(1);
+    await source.mustSeek(1);
     final offset = OffsetRASource(source, positionOffset: 1);
 
-    await expectLater(offset.seek(-1), throwsRangeError);
+    await expectLater(offset.mustSeek(-1), throwsRangeError);
     expect(await offset.position(), 0);
   });
 
@@ -51,9 +51,9 @@ void main() {
     final source = BytesRASource(Uint8List(4));
     final offset = OffsetRASource(source, positionOffset: 1);
 
-    await offset.seek(3);
+    await offset.mustSeek(3);
     expect(await source.position(), 4);
-    await expectLater(offset.seek(4), throwsRangeError);
+    await expectLater(offset.mustSeek(4), throwsRangeError);
     expect(await offset.position(), 3);
   });
 }

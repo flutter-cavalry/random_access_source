@@ -33,11 +33,7 @@ class FileRASource extends base.FileRASource {
   Future<int> position() => _file.position();
 
   @override
-  Future<void> seek(int position) async {
-    final fileLength = await _file.length();
-    if (position < 0 || position > fileLength) {
-      throw RangeError.value(position, 'position');
-    }
+  Future<void> seekCore(int position) async {
     await _file.setPosition(position);
   }
 

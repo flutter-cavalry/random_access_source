@@ -76,13 +76,23 @@ void main() {
   test('Position', () async {
     final src = _bytesSource();
     expect(src.position(), 0);
-    src.seek(2);
+    src.mustSeek(2);
     expect(src.position(), 2);
     expect(src.readByte(), 3);
-    src.seek(src.length());
+    src.mustSeek(src.length());
     expect(src.position(), src.length());
-    expect(() => src.seek(src.length() + 1), throwsRangeError);
+    expect(() => src.mustSeek(src.length() + 1), throwsRangeError);
     expect(src.position(), src.length());
+  });
+
+  test('trySeek returns false for positions outside the source', () {
+    final src = _bytesSource();
+
+    expect(src.trySeek(2), isTrue);
+    expect(src.position(), 2);
+    expect(src.trySeek(-1), isFalse);
+    expect(src.trySeek(6), isFalse);
+    expect(src.position(), 2);
   });
 
   test('ReadToEnd', () async {
@@ -93,7 +103,7 @@ void main() {
 
   test('ReadToEnd (halfway)', () async {
     final src = _bytesSource();
-    src.seek(2);
+    src.mustSeek(2);
     expect(src.readToEnd(), Uint8List.fromList([3, 4, 5]));
     expect(src.position(), 5);
   });

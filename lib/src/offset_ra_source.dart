@@ -44,13 +44,8 @@ class OffsetRASource extends RandomAccessSource {
   Future<int> position() async => await _source.position() - positionOffset;
 
   @override
-  Future<void> seek(int position) async {
-    final sourceLength = await length();
-    if (position < 0 || position > sourceLength) {
-      throw RangeError.value(position, 'position');
-    }
-    await _source.seek(positionOffset + position);
-  }
+  Future<void> seekCore(int position) =>
+      _source.seekCore(positionOffset + position);
 
   @override
   Future<Uint8List> readToEnd() => _source.readToEnd();

@@ -24,8 +24,15 @@ abstract class RandomAccessSource {
   /// Gets the current position in the source.
   Future<int> position();
 
-  /// Sets the current position in the source.
-  Future<void> seek(int position);
+  /// Low-level position setter; use trySeek or mustSeek instead.
+  @protected
+  Future<void> seekCore(int position);
+
+  /// Attempts to seek, returning false if it fails.
+  Future<bool> trySeek(int position);
+
+  /// Seeks, throwing if the position is out of range or the seek fails.
+  Future<void> mustSeek(int position);
 
   /// Reads all the remaining bytes from the source.
   Future<Uint8List> readToEnd();
