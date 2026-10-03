@@ -1,6 +1,6 @@
 ## 5.0.0
 
-- **BREAKING** `seek` now rejects positions past EOF. Seeking to EOF remains valid.
+- **BREAKING** Replace `seek` with protected `seekCore`. Callers should use `trySeek` (returns false if seeking fails) or `mustSeek` (throws if seeking fails).
 
 ## 4.4.0
 
