@@ -60,16 +60,15 @@ void main() {
     expect(await buffered.position(), 5);
   });
 
-  test('Handles buffer boundaries and positions past EOF', () async {
+  test('Handles buffer boundaries and rejects positions past EOF', () async {
     final source = _TrackingSource(_bytes(5));
     final buffered = ReadAheadRASource(source, bufferSize: 4);
 
     expect(await buffered.read(4), [0, 1, 2, 3]);
     expect(await buffered.readByte(), 4);
     expect(await buffered.readByte(), -1);
-    await buffered.seek(8);
-    expect(await buffered.readByte(), -1);
-    expect(await buffered.position(), 8);
+    await expectLater(buffered.seek(6), throwsRangeError);
+    expect(await buffered.position(), 5);
   });
 
   test('Advances by the bytes returned from a short read', () async {

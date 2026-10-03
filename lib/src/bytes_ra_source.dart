@@ -81,6 +81,9 @@ class SyncBytesRASource {
   }
 
   void seek(int position) {
+    if (position < 0 || position > _bytes.length) {
+      throw RangeError.value(position, 'position');
+    }
     _position = position;
   }
 

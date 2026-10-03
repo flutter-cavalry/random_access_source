@@ -103,6 +103,10 @@ void main() {
     await src.seek(2);
     expect(await src.position(), 2);
     expect(await src.readByte(), 3);
+    await src.seek(5);
+    expect(await src.position(), 5);
+    await expectLater(src.seek(6), throwsRangeError);
+    expect(await src.position(), 5);
     await src.close();
   });
 

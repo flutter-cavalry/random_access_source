@@ -68,6 +68,10 @@ void main() {
     await src.seek(2);
     expect(await src.position(), 2);
     expect(await src.readByte(), flutterIcon[2]);
+    await src.seek(flutterIcon.length);
+    expect(await src.position(), flutterIcon.length);
+    await expectLater(src.seek(flutterIcon.length + 1), throwsRangeError);
+    expect(await src.position(), flutterIcon.length);
     await src.close();
   });
 

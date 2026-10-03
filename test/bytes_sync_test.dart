@@ -79,6 +79,10 @@ void main() {
     src.seek(2);
     expect(src.position(), 2);
     expect(src.readByte(), 3);
+    src.seek(src.length());
+    expect(src.position(), src.length());
+    expect(() => src.seek(src.length() + 1), throwsRangeError);
+    expect(src.position(), src.length());
   });
 
   test('ReadToEnd', () async {

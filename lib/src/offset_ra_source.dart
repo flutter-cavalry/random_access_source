@@ -45,8 +45,9 @@ class OffsetRASource extends RandomAccessSource {
 
   @override
   Future<void> seek(int position) async {
-    if (position < 0) {
-      throw RangeError.value(position, 'position', 'Must not be negative');
+    final sourceLength = await length();
+    if (position < 0 || position > sourceLength) {
+      throw RangeError.value(position, 'position');
     }
     await _source.seek(positionOffset + position);
   }

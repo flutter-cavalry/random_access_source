@@ -46,4 +46,14 @@ void main() {
     await expectLater(offset.seek(-1), throwsRangeError);
     expect(await offset.position(), 0);
   });
+
+  test('Allows seeking to EOF but rejects positions past it', () async {
+    final source = BytesRASource(Uint8List(4));
+    final offset = OffsetRASource(source, positionOffset: 1);
+
+    await offset.seek(3);
+    expect(await source.position(), 4);
+    await expectLater(offset.seek(4), throwsRangeError);
+    expect(await offset.position(), 3);
+  });
 }

@@ -91,8 +91,9 @@ class ReadAheadRASource extends RandomAccessSource {
   @override
   Future<void> seek(int position) async {
     _checkOpen();
-    if (position < 0) {
-      throw RangeError.value(position, 'position', 'Must not be negative');
+    final sourceLength = await length();
+    if (position < 0 || position > sourceLength) {
+      throw RangeError.value(position, 'position');
     }
     _position = position;
   }
